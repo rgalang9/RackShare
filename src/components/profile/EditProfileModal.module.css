@@ -1,0 +1,9 @@
+.avatarRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.avatarActions {
+  display: flex;
+  gap: 6px;
+}
