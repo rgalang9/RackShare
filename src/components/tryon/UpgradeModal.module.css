@@ -1,0 +1,78 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 12% 20%, #ffd3c4, transparent 55%),
+    radial-gradient(circle at 90% 85%, #e4dcff, transparent 55%),
+    var(--accent-soft);
+}
+.hero h3 {
+  font-size: 22px;
+}
+.hero p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  box-shadow: 0 6px 16px -6px rgba(255, 90, 54, 0.6);
+}
+.perks {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+.perks li {
+  display: flex;
+  gap: 12px;
+}
+.perks li > span:last-child {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+.perks small {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.perkIcon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface-muted);
+  color: var(--accent);
+}
+.free {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.soon {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+}

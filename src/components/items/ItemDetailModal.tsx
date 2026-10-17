@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
 import { categoryById } from '@/data/categories';
 import { useRack } from '@/store/RackStore';
+import { useAuth } from '@/store/AuthStore';
+import { useUI } from '@/store/UIStore';
+import { supportsTryOn } from '@/lib/tryOn';
 import { Modal } from '@/components/ui/Modal';
 import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
@@ -11,12 +14,15 @@ import styles from './ItemDetailModal.module.css';
 
 export function ItemDetailModal({ itemId, onClose }: { itemId: string; onClose: () => void }) {
   const { items, getUser, currentUser, removeItem } = useRack();
+  const { profile } = useAuth();
+  const { openTryOn, openUpgrade } = useUI();
   const item = items.find((i) => i.id === itemId);
   if (!item) return null;
 
   const owner = getUser(item.ownerId)!;
   const isMine = owner.id === currentUser.id;
   const category = categoryById(item.category);
+  const canTryOn = !isMine && supportsTryOn(item.category);
 
   return (
     <Modal title={item.name} onClose={onClose} width={760}>
@@ -71,13 +77,22 @@ export function ItemDetailModal({ itemId, onClose }: { itemId: string; onClose: 
                 <Button icon="swap" disabled title="Trading is coming soon">
                   Propose trade
                 </Button>
-                <Button variant="secondary" icon="sparkle" disabled title="Virtual try-on is coming soon">
-                  Try on
-                </Button>
+                {canTryOn && (
+                  <Button
+                    variant="secondary"
+                    icon="sparkle"
+                    disabled={!item.imageUrl}
+                    title={item.imageUrl ? undefined : 'Try-on needs a photo of this item'}
+                    onClick={() => (profile?.is_pro ? openTryOn(item.id) : openUpgrade())}
+                  >
+                    Try it on
+                    {!profile?.is_pro && <span className={styles.pro}>PRO</span>}
+                  </Button>
+                )}
               </>
             )}
           </div>
-          {!isMine && <p className={styles.soon}>Trading &amp; virtual try-on are coming soon.</p>}
+          {!isMine && <p className={styles.soon}>Trading is coming soon.</p>}
         </div>
       </div>
     </Modal>

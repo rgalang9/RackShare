@@ -9,7 +9,7 @@ import styles from './ProfileHeader.module.css';
 
 export function ProfileHeader({ user, itemCount }: { user: User; itemCount: number }) {
   const { currentUser, isFollowing, toggleFollow } = useRack();
-  const { openEditProfile, openAddItem } = useUI();
+  const { openEditProfile, openAddItem, openMyPhoto } = useUI();
   const isMe = user.id === currentUser.id;
   const following = isFollowing(user.id);
 
@@ -62,6 +62,9 @@ export function ProfileHeader({ user, itemCount }: { user: User; itemCount: numb
               <>
                 <Button variant="secondary" icon="edit" onClick={openEditProfile}>
                   Edit profile
+                </Button>
+                <Button variant="secondary" icon="profile" onClick={openMyPhoto}>
+                  My photo
                 </Button>
                 <Button icon="plus" onClick={openAddItem}>
                   Add item

@@ -193,3 +193,32 @@
     padding: 24px 20px;
   }
 }
+/* Only rendered on localhost in dev (see src/lib/devLogin.ts). */
+.devLogin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+.devLogin:hover:not(:disabled) {
+  border-color: var(--text-faint);
+  color: var(--text);
+}
+.devLogin span {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--text);
+  color: var(--surface);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Navigate, useLocation, type Location } from 'react-router-dom';
 import { useAuth } from '@/store/AuthStore';
 import { USERNAME_PATTERN } from '@/lib/profiles';
+import { devLogin } from '@/lib/devLogin';
 import { Logo } from '@/components/layout/Logo';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -64,6 +65,19 @@ export function LoginPage() {
       // On success the session updates and the <Navigate> above takes over.
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDevLogin = async () => {
+    if (!devLogin) return;
+    setError(undefined);
+    setSubmitting(true);
+    try {
+      await signIn(devLogin.email, devLogin.password);
+    } catch (err) {
+      setError(err instanceof Error ? `Dev login: ${err.message}` : 'Dev login failed.');
     } finally {
       setSubmitting(false);
     }
@@ -187,6 +201,12 @@ export function LoginPage() {
                   {submitting ? 'One sec…' : mode === 'login' ? 'Log in' : 'Create account'}
                 </Button>
               </form>
+
+              {devLogin && mode === 'login' && (
+                <button type="button" className={styles.devLogin} onClick={handleDevLogin} disabled={submitting}>
+                  <span>DEV</span> Log in as {devLogin.email}
+                </button>
+              )}
 
               <p className={styles.switch}>
                 {mode === 'login' ? 'New to Rack Share?' : 'Already have an account?'}{' '}

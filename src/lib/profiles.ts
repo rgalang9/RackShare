@@ -8,6 +8,8 @@ export interface Profile {
   title: string | null;
   bio: string | null;
   avatar_url: string | null;
+  /** Rack Share Pro. Read-only from the browser; the try-on function re-checks it server-side. */
+  is_pro: boolean;
   created_at: string;
 }
 
