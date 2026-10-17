@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import { useRack } from '@/store/RackStore';
+import { useAuth } from '@/store/AuthStore';
 import { useUI } from '@/store/UIStore';
+import { LogoutButton } from '@/components/auth/LogoutButton';
 import { Avatar } from '@/components/ui/Avatar';
 import { Icon } from '@/components/ui/Icon';
 import { Logo } from './Logo';
@@ -12,7 +13,7 @@ import styles from './Sidebar.module.css';
  * into an Instagram-style bottom bar with the Add button in the middle.
  */
 export function Sidebar() {
-  const { currentUser } = useRack();
+  const { session, profile } = useAuth();
   const { openAddItem } = useUI();
   const [feed, ...rest] = NAV_ITEMS;
 
@@ -45,13 +46,19 @@ export function Sidebar() {
         {rest.map(link)}
       </nav>
 
-      <NavLink to="/profile" className={styles.me}>
-        <Avatar user={currentUser} size={36} />
-        <span>
-          <strong>{currentUser.name}</strong>
-          <small>@{currentUser.handle}</small>
-        </span>
-      </NavLink>
+      <div className={styles.account}>
+        <NavLink to="/profile" className={styles.me}>
+          <Avatar
+            user={{ name: profile?.username ?? '?', avatarUrl: profile?.avatar_url ?? undefined, accent: 'var(--accent)' }}
+            size={36}
+          />
+          <span>
+            <strong>{profile ? `@${profile.username}` : '…'}</strong>
+            <small>{session?.user.email}</small>
+          </span>
+        </NavLink>
+        <LogoutButton className={styles.logout} />
+      </div>
     </aside>
   );
 }

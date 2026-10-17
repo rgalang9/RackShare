@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Icon } from '@/components/ui/Icon';
+import { LogoutButton } from '@/components/auth/LogoutButton';
 import { Logo } from './Logo';
 import styles from './TopBar.module.css';
 
@@ -36,6 +37,8 @@ export function TopBar() {
           aria-label="Search"
         />
       </form>
+      {/* Desktop logs out from the sidebar; the mobile bottom nav has no room, so it lives here. */}
+      <LogoutButton className={styles.mobileLogout} />
     </header>
   );
 }

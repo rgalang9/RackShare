@@ -119,8 +119,8 @@ create policy "Users can delete their own items"
 
 -- -------------------------------------------------------------
 -- Auto-create a profile when someone signs up
--- Username defaults to "<email prefix>_<6 chars of id>" (always unique
--- and valid); the user can change it later from Edit profile.
+-- Uses the username from the signup form (auth metadata) when it's valid
+-- and free; otherwise "<email prefix>_<6 chars of id>". Never blocks signup.
 -- -------------------------------------------------------------
 create function public.handle_new_user()
 returns trigger
@@ -128,13 +128,23 @@ language plpgsql
 security definer
 set search_path = ''
 as $$
+declare
+  requested text := lower(trim(new.raw_user_meta_data ->> 'username'));
+  fallback  text := left(regexp_replace(lower(split_part(coalesce(new.email, 'user'), '@', 1)), '[^a-z0-9._]', '', 'g'), 20)
+                    || '_' || left(replace(new.id::text, '-', ''), 6);
 begin
-  insert into public.profiles (id, username)
-  values (
-    new.id,
-    left(regexp_replace(lower(split_part(coalesce(new.email, 'user'), '@', 1)), '[^a-z0-9._]', '', 'g'), 20)
-      || '_' || left(replace(new.id::text, '-', ''), 6)
-  );
+  if requested is null or requested !~ '^[a-z0-9._]{3,30}$' then
+    requested := fallback;
+  end if;
+
+  begin
+    insert into public.profiles (id, username) values (new.id, requested)
+    on conflict (id) do nothing;
+  exception when unique_violation then
+    insert into public.profiles (id, username) values (new.id, fallback)
+    on conflict (id) do nothing;
+  end;
+
   return new;
 end;
 $$;

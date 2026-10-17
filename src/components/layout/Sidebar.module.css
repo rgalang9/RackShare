@@ -64,11 +64,18 @@
   display: grid;
 }
 
+.account {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+}
 .me {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: auto;
+  flex: 1;
+  min-width: 0;
   padding: 10px;
   border-radius: var(--radius);
 }
@@ -90,6 +97,25 @@
 .me small {
   color: var(--text-muted);
   font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.logout {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+.logout:hover:not(:disabled) {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 /* ---------- Mobile: bottom nav ---------- */
@@ -103,7 +129,7 @@
     border-top: 1px solid var(--border);
   }
   .logo,
-  .me,
+  .account,
   .label {
     display: none;
   }

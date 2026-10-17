@@ -1,7 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { AuthProvider } from '@/store/AuthStore';
 import { RackProvider } from '@/store/RackStore';
 import { UIProvider } from '@/store/UIStore';
+import { RequireAuth } from '@/components/auth/RequireAuth';
 import { AppShell } from '@/components/layout/AppShell';
+import { LoginPage } from '@/pages/LoginPage';
 import { FeedPage } from '@/pages/FeedPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { MessagesPage } from '@/pages/MessagesPage';
@@ -9,13 +12,19 @@ import { SearchPage } from '@/pages/SearchPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { RouteErrorPage } from '@/pages/RouteErrorPage';
 
-// UIProvider lives inside the router so its modals can navigate & link.
 const router = createBrowserRouter([
+  // Public
+  { path: '/login', element: <LoginPage />, errorElement: <RouteErrorPage fullPage /> },
+
+  // Everything else requires a session. Add Item is a modal inside the shell, so it's covered too.
+  // UIProvider lives inside the router so its modals can navigate & link.
   {
     element: (
-      <UIProvider>
-        <AppShell />
-      </UIProvider>
+      <RequireAuth>
+        <UIProvider>
+          <AppShell />
+        </UIProvider>
+      </RequireAuth>
     ),
     // Fallback if the shell itself throws.
     errorElement: <RouteErrorPage fullPage />,
@@ -38,8 +47,10 @@ const router = createBrowserRouter([
 
 export function App() {
   return (
-    <RackProvider>
-      <RouterProvider router={router} />
-    </RackProvider>
+    <AuthProvider>
+      <RackProvider>
+        <RouterProvider router={router} />
+      </RackProvider>
+    </AuthProvider>
   );
 }

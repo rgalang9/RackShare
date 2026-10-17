@@ -10,8 +10,19 @@
   background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(12px);
 }
-.mobileLogo {
+.mobileLogo,
+.mobileLogout {
   display: none;
+}
+.mobileLogout {
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-muted);
 }
 .search {
   position: relative;
@@ -49,6 +60,9 @@
   }
   .mobileLogo {
     display: block;
+  }
+  .mobileLogout {
+    display: grid;
   }
 }
 @media (max-width: 480px) {

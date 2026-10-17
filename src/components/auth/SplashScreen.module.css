@@ -1,0 +1,23 @@
+.splash {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background: var(--bg);
+}
+.mark {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--accent);
+  box-shadow: 0 10px 24px -10px rgba(255, 90, 54, 0.8);
+  animation: wiggle 1s ease-in-out infinite;
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  50% { transform: rotate(8deg) scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mark { animation: none; }
+}

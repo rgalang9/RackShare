@@ -13,6 +13,7 @@ const PATHS = {
   swap: 'M7 7h12l-3-3M17 17H5l3 3',
   hanger: 'M12 7a2 2 0 1 1 2-2M12 7v2L3 16h18l-9-7',
   edit: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+  logout: 'M10 4H5v16h5M14 8l4 4-4 4M18 12H9',
 } as const;
 
 export type IconName = keyof typeof PATHS;
